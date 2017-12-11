@@ -89,13 +89,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\swolfch\Documents\Programmig other\C++\emulators\chip8\SDL_tutorial\Include;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_image-2.0.2\include;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_ttf-2.0.14\include;C:\Users\swolfch\Documents\Programmig other\C++\emulators\chip8\SDL_tutorial\Include;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_image-2.0.2\include;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_image-2.0.2\lib\x86;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_ttf-2.0.14\lib\x86;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_image-2.0.2\lib\x86;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,14 +120,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\swolfch\Documents\Programmig other\C++\emulators\chip8\SDL_tutorial\Include;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_image-2.0.2\include;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_ttf-2.0.14\include;C:\Users\swolfch\Documents\Programmig other\C++\emulators\chip8\SDL_tutorial\Include;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_image-2.0.2\include;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_image-2.0.2\lib\x86;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_ttf-2.0.14\lib\x86;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL2_image-2.0.2\lib\x86;C:\Users\swolfch\Documents\Programmig other\C++\libraries\SDL\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
