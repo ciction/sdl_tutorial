@@ -1,11 +1,11 @@
-// tutorial1.cpp : Defines the entry point for the console application.
-//
+//Lesson 4: Handling Events
+//http://www.willusher.io/sdl2%20tutorials/2013/08/20/lesson-4-handling-events
 
 #include "stdafx.h"
 #include <iostream>
 #include "SDL.h"
 #include "res_path.h"
-
+#include "SDL_image.h"
 
 
 //eigen implementatie van cleanup
@@ -29,6 +29,7 @@ void cleanup(SDL_Window *t) { SDL_DestroyWindow(t); }
 */
 void logSDLError(std::ostream &os, const std::string &msg) {
 	os << msg << " error: " << SDL_GetError() << std::endl;
+	std::cin.get();
 }
 
 
@@ -39,21 +40,9 @@ void logSDLError(std::ostream &os, const std::string &msg) {
 * @return the loaded texture, or nullptr if something went wrong.
 */
 SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren) {
-	//Initialize to nullptr to avoid dangling pointer issues
-	SDL_Texture *texture = nullptr;
-	//Load the image
-	SDL_Surface *loadedImage = SDL_LoadBMP(file.c_str());
-	//If the loading went ok, convert to texture and return the texture
-	if (loadedImage != nullptr) {
-		texture = SDL_CreateTextureFromSurface(ren, loadedImage);
-		SDL_FreeSurface(loadedImage);
-		//Make sure converting went ok too
-		if (texture == nullptr) {
-			logSDLError(std::cout, "CreateTextureFromSurface");
-		}
-	}
-	else {
-		logSDLError(std::cout, "LoadBMP");
+	SDL_Texture *texture = IMG_LoadTexture(ren, file.c_str());
+	if (texture == nullptr) {
+		logSDLError(std::cout, "LoadTexture");
 	}
 	return texture;
 }
@@ -75,12 +64,35 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y) {
 	SDL_RenderCopy(ren, tex, NULL, &dst);
 }
 
+/**
+* Draw an SDL_Texture to an SDL_Renderer at position x, y, with some desired
+* width and height
+* @param tex The source texture we want to draw
+* @param ren The renderer we want to draw to
+* @param x The x coordinate to draw to
+* @param y The y coordinate to draw to
+* @param w The width of the texture to draw
+* @param h The height of the texture to draw
+*/
+void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int w, int h) {
+	//Setup the destination rectangle to be at the position we want
+	SDL_Rect dst;
+	dst.x = x;
+	dst.y = y;
+	dst.w = w;
+	dst.h = h;
+	SDL_RenderCopy(ren, tex, NULL, &dst);
+}
+
+
+
 
 
 int main(int argc, char* argv[])
 {
 	const int SCREEN_WIDTH = 640;
 	const int SCREEN_HEIGHT = 480;
+	const int TILE_SIZE = 40;
 
 	//try to start SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -88,8 +100,15 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	//already init PNG subsystem (so the first PNG images will load faster )
+	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG) {
+		logSDLError(std::cout, "IMG_Init");
+		SDL_Quit();
+		return 1;
+	}
+
 	//try opening a window
-	SDL_Window *window = SDL_CreateWindow("Lesson 2", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	SDL_Window *window = SDL_CreateWindow("	n 4", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	if (window == nullptr) {
 		logSDLError(std::cout, "SDL_CreateWindow");
 		SDL_Quit();
@@ -107,11 +126,9 @@ int main(int argc, char* argv[])
 
 
 
-	const std::string resPath = getResourcePath("Lesson2");
-	SDL_Texture *background = loadTexture(resPath + "background.bmp", renderer);
-	SDL_Texture *image = loadTexture(resPath + "image.bmp", renderer);
-	if (background == nullptr || image == nullptr) {
-		cleanup(background);
+	const std::string resPath = getResourcePath("Lesson4");
+	SDL_Texture *image = loadTexture(resPath + "image.png", renderer);
+	if (image == nullptr) {
 		cleanup(renderer);
 		cleanup(window);
 		cleanup(image);
@@ -120,37 +137,45 @@ int main(int argc, char* argv[])
 	}
 
 
-	//render loop
-	//A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
+	//real render loop
+	//Our event structure
+	SDL_Event e;
+	bool quit = false;
+	while (!quit) {
+		while (SDL_PollEvent(&e)) {
+			if (e.type == SDL_QUIT) {
+				quit = true;
+			}
+			if (e.type == SDL_KEYDOWN) {
+				quit = true;
+			}
+			if (e.type == SDL_MOUSEBUTTONDOWN) {
+				quit = true;
+			}
+		}
 
-	for (int i = 0; i < 3; ++i) {
+		//Render the scene
 		//clear screen
 		SDL_RenderClear(renderer);
-		//render background
-		int bW, bH;
-		SDL_QueryTexture(background, NULL, NULL, &bW, &bH);
-		renderTexture(background, renderer, 0, 0);
-		renderTexture(background, renderer, bW, 0);
-		renderTexture(background, renderer, 0, bH);
-		renderTexture(background, renderer, bW, bH);
 
-		//render image
+		//draw image
+			//render image
 		int iW, iH;
 		SDL_QueryTexture(image, NULL, NULL, &iW, &iH);
 		int x = SCREEN_WIDTH / 2 - iW / 2;
 		int y = SCREEN_HEIGHT / 2 - iH / 2;
 		renderTexture(image, renderer, x, y);
+		renderTexture(image, renderer, x, y);
 
-		//present 
+		//present
 		SDL_RenderPresent(renderer);
-		SDL_Delay(1000);
 	}
 
 	std::cout << "Resource path is: " << getResourcePath() << std::endl;
 
 
 	//cleanup
-	cleanup(background);
+
 	cleanup(renderer);
 	cleanup(window);
 	cleanup(image);
